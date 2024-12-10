@@ -4,6 +4,7 @@ import Login from './components/Login';
 import { AuthProvider } from './context/AuthContext';
 import { Route, Routes } from 'react-router-dom';
 import Tasks from './components/Tasks';
+import EditTask from './components/EditTask';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/tasks" element={<Tasks />} />
+        <Route path="/tasks/edit/:id" element={<EditTask />} />
       </Routes>
     </AuthProvider>
   );

@@ -4,14 +4,11 @@ import api from "../api";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("adminTask");
+    const [password, setPassword] = useState("passwordTask");
 
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
-
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,7 +18,6 @@ const Login = () => {
             navigate("/tasks"); // Redirecionar para a página de tarefas
         } catch (error) {
             console.log(error);
-
         }
     };
 
