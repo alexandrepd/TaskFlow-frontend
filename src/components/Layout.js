@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Corrigir a importação do Link
+import { Link } from 'react-router-dom'; // Importação correta do Link
 import ErrorMessage from './ErrorMessage';
 
 export default function Layout({ children, errorMessage }) {
@@ -7,7 +7,7 @@ export default function Layout({ children, errorMessage }) {
         <div className="min-h-screen flex flex-col bg-gray-50 text-gray-900">
             {/* Cabeçalho */}
             <header className="w-full bg-blue-500 text-white py-4">
-                <Link to="/"> {/* Corrigir o atributo para 'to' */}
+                <Link to="/tasks"> {/* Usando o atributo 'to' corretamente */}
                     <h1 className="text-3xl font-bold text-center">TaskFlow</h1>
                 </Link>
             </header>

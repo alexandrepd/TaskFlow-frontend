@@ -34,7 +34,7 @@ const Tasks = () => {
 
     useEffect(() => {
         if (!auth.isAuthenticated) {
-            navigate("/");//login page
+            navigate("/login");//login page
         }
         fetchTasks();
     }, [auth, navigate]);
