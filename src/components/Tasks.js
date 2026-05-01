@@ -8,7 +8,7 @@ import Layout from "./Layout";
 const Tasks = () => {
     const [tasks, setTasks] = useState([]);
     const { auth } = useContext(AuthContext);
-    const [errorMessage, setErrorMessage] = useState(""); // Estado para armazenar a mensagem de erro   
+    const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(true);
@@ -25,8 +25,8 @@ const Tasks = () => {
             const response = await api.get("/tasks");
             setTasks(response.data);
         } catch (error) {
-            console.log(error);
-            setErrorMessage("Error fetching tasks");
+            const message = error.response?.data?.message || "Erro ao carregar tarefas.";
+            setErrorMessage(message);
         } finally {
             setLoading(false);
         }
@@ -34,21 +34,29 @@ const Tasks = () => {
 
     useEffect(() => {
         if (!auth.isAuthenticated) {
-            navigate("/");//login page
+            navigate("/login");
+            return;
         }
+
         fetchTasks();
     }, [auth, navigate]);
 
     const handleCreateTask = async (e) => {
         e.preventDefault();
         try {
-            const response = await api.post("/tasks", newTask);
-            console.log(response);
-            // setTasks([...tasks, { ...newTask, id: response.data }]);
+            const payload = {
+                title: newTask.title,
+                description: newTask.description,
+                category: newTask.category,
+                priority: newTask.priority,
+            };
+
+            await api.post("/tasks", payload);
             fetchTasks();
             setNewTask({ id: "", title: "", description: "", category: "", priority: "Low" });
         } catch (error) {
-            setErrorMessage("Error creating task");
+            const message = error.response?.data?.message || "Erro ao criar tarefa.";
+            setErrorMessage(message);
         }
     };
 
@@ -57,7 +65,8 @@ const Tasks = () => {
             await api.delete(`/tasks/${taskId}`);
             setTasks(tasks.filter((task) => task.id !== taskId));
         } catch (error) {
-            setErrorMessage("Error deleting task:");
+            const message = error.response?.data?.message || "Erro ao deletar tarefa.";
+            setErrorMessage(message);
         }
     };
 

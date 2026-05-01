@@ -5,23 +5,24 @@ import { useNavigate } from "react-router-dom";
 import Layout from "./Layout";
 
 const Login = () => {
-    const [username, setUsername] = useState("adminTask");
-    const [password, setPassword] = useState("passwordTask");
-    const [errorMessage, setErrorMessage] = useState(""); // Estado para armazenar a mensagem de erro
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setErrorMessage(""); // Limpar mensagem de erro antes de tentar o login
+        setErrorMessage("");
+
         try {
             const response = await api.post("/auth/login", { username, password });
-            login(response.data);
-            navigate("/tasks"); // Redirecionar para a página de tarefas
+            login(response.data.token);
+            navigate("/tasks");
         } catch (error) {
-            console.error(error);
-            setErrorMessage("Ocorreu um erro ao tentar fazer login. Verifique suas credenciais e tente novamente."); // Definir mensagem de erro
+            const message = error.response?.data?.message || "Ocorreu um erro ao tentar fazer login. Verifique suas credenciais e tente novamente.";
+            setErrorMessage(message);
         }
     };
 

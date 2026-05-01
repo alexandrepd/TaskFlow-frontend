@@ -1,9 +1,12 @@
-import react, { createContext, useState } from "react";
+import { createContext, useMemo, useState } from "react";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [auth, setAuth] = useState({ token: null, isAuthenticated: false });
+    const [auth, setAuth] = useState(() => {
+        const token = localStorage.getItem("token");
+        return { token, isAuthenticated: Boolean(token) };
+    });
 
     const login = (token) => {
         localStorage.setItem("token", token);
@@ -15,7 +18,7 @@ export const AuthProvider = ({ children }) => {
         setAuth({ token: null, isAuthenticated: false });
     };
 
-    const value = { auth, login, logout };
+    const value = useMemo(() => ({ auth, login, logout }), [auth]);
 
     return (
         <AuthContext.Provider value={value}>
