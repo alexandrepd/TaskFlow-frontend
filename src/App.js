@@ -6,6 +6,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Tasks from './components/Tasks';
 import EditTask from './components/EditTask';
+import AdminUsers from './components/AdminUsers';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/tasks/edit/:id" element={<EditTask />} />
+        <Route path="/admin" element={<AdminUsers />} />
       </Routes>
     </AuthProvider>
   );
