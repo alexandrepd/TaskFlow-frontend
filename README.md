@@ -1,6 +1,147 @@
-# Getting Started with Create React App
+# TaskFlow Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A task management web application built with **React 19** and **Tailwind CSS**, consuming the [TaskFlow API](https://github.com/alexandreoliveira/TaskFlow).
+
+---
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Tech Stack](#tech-stack)
+- [Pages & Routes](#pages--routes)
+- [Environment Variables](#environment-variables)
+- [Running with Docker](#running-with-docker)
+- [Local Development](#local-development)
+- [Project Structure](#project-structure)
+- [Branch History](#branch-history)
+
+---
+
+## Overview
+
+TaskFlow Frontend is a single-page application (SPA) that lets users register, log in, and manage their personal task lists. An admin role unlocks access to the user management panel. Authentication state is held in React Context, with the JWT decoded client-side to extract the user's name and role.
+
+---
+
+## Tech Stack
+
+| Technology | Version | Purpose |
+|---|---|---|
+| React | 19 | UI library |
+| React Router | 7 | Client-side routing |
+| Tailwind CSS | 3 | Utility-first styling |
+| Axios | — | HTTP client |
+| Context API | — | Global auth state |
+| Nginx | alpine | Static file serving in Docker |
+
+---
+
+## Pages & Routes
+
+| Route | Component | Auth required | Description |
+|---|---|---|---|
+| `/` | `LandingPage` | No | Hero page with feature highlights and CTAs |
+| `/login` | `Login` | No (redirects if logged in) | Email/password login form |
+| `/register` | `Register` | No (redirects if logged in) | New account registration with password strength indicator |
+| `/tasks` | `Tasks` | Yes | Personal task board with create, filter, and delete |
+| `/tasks/edit/:id` | `EditTask` | Yes | Edit an existing task |
+| `/admin` | `AdminUsers` | Admin only | View and search all registered users |
+
+---
+
+## Environment Variables
+
+| Variable | Description | Default (dev fallback) |
+|---|---|---|
+| `REACT_APP_API_URL` | Base URL for the TaskFlow API | `http://localhost:5105/api` |
+
+For **local development**, create a `.env` file in the project root:
+
+```env
+REACT_APP_API_URL=http://localhost:5105/api
+```
+
+For **Docker builds**, the variable is injected as a build argument (see `docker-compose.yml`).
+
+> `.env` is git-ignored. Never commit real API URLs or secrets.
+
+---
+
+## Running with Docker
+
+> Prerequisites: Docker and Docker Compose installed. The TaskFlow API must also be running.
+
+From the **root of the monorepo** (where `docker-compose.yml` lives):
+
+```bash
+# Set the API URL the browser will call
+export REACT_APP_API_URL=http://localhost:4000/api
+
+# Build and start frontend + backend + database
+docker compose up --build
+```
+
+The app will be available at **http://localhost:3000**.
+
+---
+
+## Local Development
+
+> Prerequisites: Node.js 18+ and npm.
+
+```bash
+# Install dependencies
+npm install
+
+# Start the development server
+npm start
+```
+
+The app starts on **http://localhost:3000** and hot-reloads on file changes.
+
+```bash
+# Run tests
+npm test
+
+# Build for production
+npm run build
+```
+
+---
+
+## Project Structure
+
+```
+taskflow-frontend/
+├── public/
+└── src/
+    ├── api.js              # Axios instance with base URL + 401 interceptor
+    ├── App.js              # Route definitions
+    ├── index.css           # Tailwind directives + custom utility classes
+    ├── context/
+    │   └── AuthContext.js  # JWT storage, decode (username/role), login/logout
+    └── components/
+        ├── Layout.js       # Sticky header, responsive nav, auth-aware links
+        ├── LandingPage.js  # Marketing landing page
+        ├── Login.js        # Login form with field validation and loading state
+        ├── Register.js     # Registration form with password strength indicator
+        ├── Tasks.js        # Task list with inline create form
+        ├── EditTask.js     # Task edit form
+        └── AdminUsers.js   # Admin-only user table with search
+```
+
+---
+
+## Branch History
+
+| Branch | Description |
+|---|---|
+| `chore/taskflow-frontend-updates` | Initial React setup, Axios config, Auth context |
+| `feature/ui-redesign` | Full Tailwind CSS redesign, Layout component, Landing page, responsive nav |
+| `feature/login-improvements` | Field-level validation, password toggle, loading spinner, error feedback |
+| `feature/user-registration` | Register page with password strength checker and auto-login |
+| `feature/admin-users-panel` | Admin users page with role badges and search |
+
 
 ## Available Scripts
 
