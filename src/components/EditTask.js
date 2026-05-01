@@ -8,11 +8,12 @@ const EditTask = () => {
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState("");
     const [task, setTask] = useState({
+        id: "",
         title: "",
         description: "",
         category: "",
-        priority: "",
-        status: "",
+        priority: "Low",
+        status: "Pending",
     });
     const [loading, setLoading] = useState(true);
 
@@ -39,11 +40,20 @@ const EditTask = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         try {
-            await api.put(`/tasks/${id}`, task);
-            navigate("/tasks"); // Voltar para a lista após a atualização
+            await api.put(`/tasks/${id}`, {
+                id,
+                title: task.title,
+                description: task.description,
+                category: task.category,
+                priority: task.priority,
+                status: task.status,
+            });
+            navigate("/tasks");
         } catch (error) {
-            console.error("Error updating task:", error);
+            const message = error.response?.data?.message || "Error updating task";
+            setErrorMessage(message);
         }
     };
 
@@ -106,8 +116,9 @@ const EditTask = () => {
                             onChange={handleChange}
                         >
                             <option value="Pending">Pending</option>
-                            <option value="In Progress">In Progress</option>
+                            <option value="InProgress">In Progress</option>
                             <option value="Completed">Completed</option>
+                            <option value="Cancelled">Cancelled</option>
                         </select>
                     </div>
                     <button type="submit" className="btn btn-success">
