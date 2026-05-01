@@ -19,6 +19,7 @@ WORKDIR /usr/share/nginx/html
 # Remover arquivos padrão do NGINX e copiar o build
 RUN rm -rf ./*
 COPY --from=build /app/build .
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
